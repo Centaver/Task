@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"  ng-app="myApp">
+
+<head>
+    <title>My task table</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <style>
+        .complete{
+            color: green;
+        }
+        .active{
+          color: red;  
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container"  ng-controller="myCtrl as my">
+        <h2>Task list</h2>
+        <p>Count of task:{{my.tasks.length}}</p>
+        <table class="table table-hover">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Add new task" ng-model="my.newTask.task;">
+                <div class="input-group-btn">
+                    <button class="btn btn-success" ng-click="my.add()">Add</button>
+                </div>
+            </div>
+            <thead>
+                <tr>
+                    <th>Deleting</th>
+                    <th ng-click="my.sort = 'task'; my.revers = !my.revers">Task</th>
+                    <th ng-click="my.sort = 'check'; my.revers = !my.revers">Check</th>
+                    <th ng-click="my.sort = 'done'; my.revers = !my.revers">Done/In progress</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                                
+                <tr ng-repeat="task in my.tasks | orderBy: my.sort: my.revers">
+                    <td>
+                        <button type="button" class="btn btn-danger" ng-click="my.deleteTask(task)">Delete</button>
+                    </td>
+                    <td>{{task.task}}</td>
+                    <td>
+                        <input type="checkbox" ng-model="task.check" ng-click="my.chengStatys(task)"> </td>
+                    <td class={{task.class}} >{{task.done}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info" ng-click="my.editTask(task)">Edit</button>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="4">
+                        <input ng-if="my.ischange" type="text" class="form-control" placeholder="Edit task" ng-model="my.editeTask.task"> </td>
+                    <td colspan="1">
+                        <button ng-if="my.ischange" class="btn btn-success" ng-click="my.editeTask = {}; my.ischange = false;">Save</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="js/app.js"></script>
+    <script src="js/services/UserServis.js"></script>
+    <script src="js/controllers/my-ctrl.js"></script>
+</body>
+
+</html>
